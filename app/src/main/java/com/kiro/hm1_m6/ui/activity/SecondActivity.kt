@@ -16,22 +16,22 @@ import com.kiro.hm1_m6.ui.utills.App
 import dagger.hilt.android.AndroidEntryPoint
 
 class SecondActivity : AppCompatActivity() {
-    private lateinit var binding : ActivitySecondBinding
+    private lateinit var binding: ActivitySecondBinding
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this)[MainViewModel::class.java]
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
         onClick()
-        setupObserver()
 
     }
 
     private fun onClick() {
-        binding.btBack.setOnClickListener{
+        binding.btBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
 
             startActivity(intent)
@@ -48,29 +48,24 @@ class SecondActivity : AppCompatActivity() {
                 val title1 = binding.etTitle.text.toString()
                 val des = binding.etDescription.text.toString()
 
-                viewModel.updateNote(NoteModel(id = id ,title = title1, description = des))
+                viewModel.updateNote(NoteModel(id = id, title = title1, description = des))
                 Toast.makeText(this, "setNote", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
+        } else {
+            binding.btnSave.setOnClickListener {
+                val title = binding.etTitle.text.toString()
+                val des = binding.etDescription.text.toString()
 
+                viewModel.setUser(NoteModel(title = title, description = des))
+                Toast.makeText(this, "setNote", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
 
-    }
-
-    private fun setupObserver() {
-        if (intent ==null){
-        binding.btnSave.setOnClickListener {
-            val title = binding.etTitle.text.toString()
-            val des = binding.etDescription.text.toString()
-
-            viewModel.setUser(NoteModel(title = title, description = des))
-            Toast.makeText(this, "setNote", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-        }
     }
 }
